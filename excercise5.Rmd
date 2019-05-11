@@ -1,0 +1,112 @@
+---
+title: "exercise 5"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, 
+                      warning = FALSE, 
+                      message = FALSE, 
+                      error = FALSE,
+                      results = 'hide',
+                      fig.show = 'hide')
+```
+
+
+##1
+```{r}
+library(tidyverse)
+library(jsonlite)
+library(tidyverse)
+library(dplyr)
+library(stringr)
+
+```
+
+##2
+```{R}
+if (!require("rprojroot")) install.packages("rprojroot")
+library("rprojroot")
+root <- find_root_file(criterion = is_rstudio_project)
+root
+```
+##5
+```{r}
+getwd
+##A
+unzip("./data/biodiversity-in-national-parks.zip")
+
+##B
+parks_data <- read_delim(file = file.path(root, "data", 
+                                           "parks.csv"), 
+                                            delim = ",")
+species_data <- read_delim(file = file.path(root, "data", "species.csv"), delim = ",")
+```
+
+##6
+```{r}
+? filter
+names(species_data)
+
+##A 46022 verschillende species
+species_data$`Scientific Name` %>% unique() 
+
+##B 56 verschillende parken
+parks_data$`Park Name`%>% unique()
+
+##C er zijn 374 species endangered
+head(species_data)
+endangered_species <- filter(species_data, `Conservation Status` == "Endangered")
+nrow(endangered_species)
+
+##D Hawaii Volcunoes National Park heeft met 44 de meeste endangered species 
+group_by(endangered_species, `Park Name`) %>%
+tally( sort = TRUE)
+
+```
+
+##7
+```{r}
+
+##A
+joined_data <- left_join(species_data, parks_data)
+
+##B
+ names(joined_data) <- names(joined_data) %>% tolower() %>%
+  str_replace_all( " " , "_")
+names(joined_data)
+
+```
+
+##7.1
+```{r}
+library(scales)
+## acres to km
+joined_data <- mutate(joined_data, surface_km2 = joined_data$acres/247.11 )
+## naar scientific notation
+  joined_data$suface_scientific <- scientific(joined_data$surface_km2, digits = 3)
+  
+
+
+```
+##8
+```{r}
+
+summary_data <- summarise(joined_data)
+
+##A
+
+head(joined_data)
+ ##create variable
+parks_recorded <- group_by(scientific_name)a%>%
+  count(scientific_name, sort =  TRUE)
+## add to table
+summary_data <- mutate(parks_recorded)
+
+##B ??? vragen tijdens college
+total_surface <- joined_data %>%
+group_by(scientific_name) %>%
+  summarise(total_surface = sum())
+
+
+```

@@ -1,0 +1,42 @@
+---
+title: "exercise6"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##1
+```{r}
+if (!require("rprojroot")) install.packages("rprojroot")
+library("rprojroot")
+root <- find_root_file(criterion = is_rstudio_project)
+root
+
+```
+
+##2
+```{r}
+library(msa)
+library(tidyverse)
+library(biomaRt)
+library(annotate)
+library(Biostrings)
+library(seqinr)
+library(DECIPHER)
+library(GEOquery)
+library(Biobase)
+``` 
+
+##7
+```{r}
+##A getting GSE data
+gse <- GEOquery::getGEO("GSE116936")
+show(gse)
+
+##creating expressionset
+expression_set <- pData(phenoData(gse[[1]]))[1:5,c(1,6,8)]
+
+sup_gse <- getGEOSuppFiles("GSE116936")
+```

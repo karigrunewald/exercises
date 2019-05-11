@@ -1,0 +1,125 @@
+---
+title: "excercise3.o"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+if (!require("rprojroot")) install.packages("rprojroot")
+library("rprojroot")
+root <- find_root_file(criterion = is_rstudio_project)
+root
+```
+1
+```{r}
+#A
+?runif
+v <- runif(n = 80, min = -10, max = 10)
+
+#B
+v[sample(1:80, sample(10:20, 1))] <- NA
+
+#C het antwoord is 32
+sum(is.na(v))
+
+#D
+?matrix
+m <- matrix(data = v, nrow = 8, ncol = 10, byrow = FALSE)
+head(m)
+    
+#E
+rownames(m) <- paste("row", 1:8, sep="_")
+colnames(m) <- paste("column", 1:10, sep="_")
+m
+```
+
+2
+```{r}
+#A
+  ## Row 1 selecteren
+  m_row1 <-m[1,]
+  ## waardes groter dan 3 selecteren in row 1
+  m_r1b3 <- m_row1[m_row1 > 3]
+  ## er zijn 5 waardes in row 1 groter dan 3
+  
+##B
+mean(m_r1b3)
+ ##gemiddelde is 7.452839
+
+##C
+ ## wanneer er geen na.rm = TRUE wordt toegeboegd geeft de output het antwoord NA   aan
+##D
+  m_r1b3_rmna <- na.omit(m_r1b3)
+ 
+##E
+mean(m_r1b3_rmna)
+```
+3
+```{r}
+
+##A kom er niet uit met vectoren. Heb een andere manier gebruikt, zie B
+
+##B
+m148 <- m[c(1,4,8),]
+m148
+
+##C er zijn 2 waardes die groter zijn dan 2.5 en kleiner dan 4. het gemiddelde is 3.333324
+
+m4 <- m148[2,]
+m4 
+m4.0 <- m4[ m4 > 2.5]
+m4C <- m4.0[m4.0 < 4]
+m4C
+mean(m4C)
+```
+4
+```{R}
+##A
+nr <- c(1.8, 4.5, 10.1, 8.3, 7.5)
+prime <- c(seq(1, 7, 2), 11)
+name <- c("abc1", "foo2", "bar3", "app5")
+valid <- c(TRUE, FALSE, FALSE, TRUE, FALSE)
+name <- c("abc1", "foo2", "bar3", "app5", "bar1")
+
+df <- data.frame(nr, prime, name, valid, name)
+##B
+##manier 1
+df$prime
+## manier 2
+df[,2]
+##C id is nr?
+#manier 1
+df$nr[2]
+df[3,2]
+##D
+sum(df$prime)
+##E
+nr_prime <- df[, c(1,3)]
+nr_prime
+```
+
+```{r}
+
+##A
+dfA <- df[order(df$nr),]
+
+##B
+dfB <-  df[order(df$name), ]
+dfB
+
+##C
+dfc <- df[order(df$prime, decreasing = T),]
+dfc
+
+##D wanneer logicals in een numerieke vector worden gestopt, gaan de FALSE over in 0 en TRUE over in 1. in dit geval staat het dus in increasing volgorde.
+dfD <- df[order(df$valid),]
+dfD
+
+```
